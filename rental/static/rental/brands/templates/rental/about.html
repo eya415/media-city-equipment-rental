@@ -1,0 +1,477 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | RentHub</title>
+  <meta name="description" content="RentHub - Egypt’s creative camera & equipment rental hub for filmmakers, photographers, and creators.">
+  <meta name="keywords" content="camera rental, Egypt, RentHub, photography, studio gear, video, content creators">
+  <meta name="author" content="RentHub Team">
+  <link rel="icon" href="{% static 'rental/images/favicon.ico' %}" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f8f8f8;
+      color: #222;
+    }
+
+    /* ░░░ NAVBAR ░░░ */
+    .navbar {
+      background: #003322;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-left .logo {
+      width: 50px;
+      margin-right: 12px;
+    }
+
+    .nav-left h1 {
+      font-size: 2rem;
+      margin: 0;
+      background: linear-gradient(to right, #ffa500 50%, white 50%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links li a:hover,
+    .nav-links li a.nav-btn.active {
+      background: #ffa500;
+      color: #003322;
+    }
+
+    .dropdown-parent {
+      position: relative;
+    }
+
+    .dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      display: none;
+      background: white;
+      color: #003322;
+      list-style: none;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+    }
+
+    .dropdown-parent:hover .dropdown {
+      display: block;
+    }
+
+    .dropdown li a {
+      color: #003322;
+      padding: 6px 12px;
+      display: block;
+      text-decoration: none;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: white;
+    }
+
+    .nav-cta {
+      background-color: #ffa500;
+      color: #003322;
+      font-weight: bold;
+      padding: 10px 18px;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      text-align: center;
+      margin-left: 20px;
+      white-space: nowrap;
+    }
+
+    .nav-cta:hover {
+      background-color: #ff8800;
+      color: white;
+    }
+
+    .desktop-only {
+      display: inline-block;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+        margin-top: 20px;
+      }
+
+      .nav-links li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links li a {
+        display: block;
+      }
+
+      .nav-links.show {
+        display: flex;
+      }
+
+      .desktop-only {
+        display: none;
+      }
+
+      .nav-links li:last-child {
+        margin-top: 15px;
+      }
+
+      .nav-links li:last-child a.nav-cta {
+        display: block;
+        width: 100%;
+        background-color: #ffa500;
+        color: #003322;
+        font-weight: bold;
+        padding: 10px 0;
+        border-radius: 30px;
+        text-align: center;
+      }
+    }
+
+    /* HERO SECTION */
+    .hero {
+      background: url("{% static 'rental/images/about-hero.jpg' %}") no-repeat center center/cover;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      padding: 50px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      color: white;
+      animation: fadeInUp 1s ease-out forwards;
+    }
+
+    .hero-content h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      color: #ffa500;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      color: #f0f0f0;
+    }
+
+    /* FEATURES SECTION - Enhanced */
+    .features {
+      padding: 80px 30px;
+      background: #ffffff;
+    }
+
+    .features-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #003322;
+      margin-bottom: 50px;
+      position: relative;
+    }
+
+    .features-title::after {
+      content: '';
+      height: 3px;
+      width: 60px;
+      background: #ffa500;
+      display: block;
+      margin: 12px auto 0;
+      border-radius: 50px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: #fefefe;
+      padding: 25px 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      text-align: center;
+      transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInCard 0.8s ease forwards;
+    }
+
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.4s; }
+    .feature-card:nth-child(4) { animation-delay: 0.6s; }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+    }
+
+    .feature-card i {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #ffa500;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+      color: #003322;
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #003322;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    footer a {
+      color: #ffa500;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInCard {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  border: 2px solid #ffa500;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: white;
+  margin-left: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.auth-link, .logout-btn {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #003322;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.auth-link:hover, .logout-btn:hover {
+  background-color: #ffa500;
+  color: white;
+}
+
+.auth-link.active {
+  background-color: #ffa500;
+  color: white;
+}
+
+.divider {
+  width: 1px;
+  background-color: #ffa500;
+  margin: 0 4px;
+}
+
+.auth-welcome {
+  padding: 0 12px;
+  font-size: 0.9rem;
+  color: #003322;
+}
+
+
+  </style>
+</head>
+<body>
+<!-- ░░░ Navbar ░░░ -->
+<nav class="navbar">
+  <div class="nav-left">
+    <img src="{% static 'rental/images/logo.png' %}" alt="Logo" class="logo">
+    <h1>RENTHUB</h1>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+  <ul class="nav-links" id="menu">
+    <li><a href="{% url 'home' %}" class="nav-btn {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+    <li><a href="{% url 'about' %}" class="nav-btn {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
+    <li><a href="{% url 'gallery' %}" class="nav-btn {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">Gallery</a></li>
+
+    <li class="dropdown-parent">
+      <a href="#" class="nav-btn">My Account <i class="fas fa-caret-down"></i></a>
+      <ul class="dropdown">
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'cart' %}">Cart</a></li>
+          <li><a href="{% url 'wishlist' %}">Wishlist</a></li>
+          <li><a href="#">Checkout</a></li>
+          <li><a href="#">Orders</a></li>
+        {% else %}
+          <li><a href="{% url 'login' %}?next={% url 'cart' %}">Cart </a></li>
+          <li><a href="{% url 'login' %}?next={% url 'wishlist' %}">Wishlist </a></li>
+          <li><a href="{% url 'login' %}">Checkout</a></li>
+          <li><a href="{% url 'login' %}">Orders</a></li>
+        {% endif %}
+      </ul>
+    </li>
+
+    <li><a href="#" class="nav-btn">Contact</a></li>
+  </ul>
+
+  {% if user.is_authenticated %}
+    <div class="auth-box desktop-only">
+      <span class="auth-welcome">Hi, {{ user.username }}</span>
+      <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="auth-link logout-btn">Logout</button>
+      </form>
+    </div>
+  {% else %}
+    <a href="{% url 'login' %}" class="nav-cta desktop-only">Login / Register</a>
+  {% endif %}
+</nav>
+
+{% if messages %}
+  <div class="alert-box">
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Who We Are</h1>
+    <p>RentHub was born from a simple idea: empower creatives with easy, affordable access to top-quality equipment. Whether you're a beginner or a pro, we make sure you have the gear you need — when you need it.</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features">
+  <h2 class="features-title">Why Choose RentHub?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <i class="fas fa-lightbulb"></i>
+      <h3>Creative Freedom</h3>
+      <p>Access professional tools without the high costs. Focus on your vision — we handle the gear.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-clock"></i>
+      <h3>Flexible Rentals</h3>
+      <p>Rent daily, weekly, or monthly. We offer packages tailored to every need and project.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-headset"></i>
+      <h3>Dedicated Support</h3>
+      <p>Our team is here to assist before, during, and after every rental. 24/7 service you can rely on.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 RentHub. All rights reserved.</p>
+  <p>
+    <a href="#"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+  </p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.classList.toggle('show');
+  }
+</script>
+
+</body>
+</html>

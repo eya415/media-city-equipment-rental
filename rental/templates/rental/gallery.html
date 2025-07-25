@@ -1,0 +1,1313 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media City | Gallery</title>
+  <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+  --primary-red: #d10000;
+  --dark-red: #b00000;
+  --dark-gray: #333333;
+  --medium-gray: #555555;
+  --light-gray: #f5f5f5;
+  --light-beige: #fefaf5;
+  --white: #ffffff;
+  --soft-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--light-beige);
+  color: var(--dark-gray);
+  line-height: 1.6;
+}
+
+/* ░░░ Enhanced Navbar Styles ░░░ */
+.navbar {
+  background: var(--white);
+  color: var(--dark-red);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  padding: 10px 5%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-left .logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-left .logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-left h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--dark-red) 0%, var(--dark-gray) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  color: var(--dark-gray);
+  font-weight: 600;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-links li a:hover,
+.nav-links li a.nav-btn.active {
+  background: var(--dark-red);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.dropdown-parent {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  display: none;
+  background: var(--white);
+  color: var(--dark-gray);
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.dropdown-parent:hover .dropdown {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown li a {
+  color: var(--dark-gray);
+  padding: 8px 20px;
+  display: block;
+  text-decoration: none;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.dropdown li a:hover {
+  background: rgba(var(--dark-red-rgb), 0.1);
+  color: var(--dark-red);
+  padding-left: 25px;
+}
+
+.dropdown li a i {
+  width: 20px;
+  text-align: center;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--dark-gray);
+  transition: transform 0.3s ease;
+}
+
+.hamburger:hover {
+  transform: scale(1.1);
+  color: var(--dark-red);
+}
+
+/* Auth Section Styles */
+.auth-item {
+  margin-left: auto;
+}
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.auth-welcome {
+  font-weight: 600;
+  color: var(--dark-gray);
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: var(--primary-red);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(var(--primary-red-rgb), 0.1);
+}
+
+.auth-link {
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  background: rgba(var(--primary-red-rgb), 0.1);
+}
+
+.auth-link.active {
+  background: var(--primary-red);
+  color: var(--white);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--light-gray);
+}
+
+/* Mobile Styles */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  
+  .nav-links {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    order: 1;
+  }
+
+  .nav-left {
+    order: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    margin-top: 20px;
+    gap: 5px;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 5px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .dropdown-parent {
+    width: 100%;
+  }
+
+  .dropdown {
+    position: static;
+    display: none;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 5px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .dropdown-parent:hover .dropdown,
+  .dropdown-parent.active .dropdown {
+    display: block;
+  }
+
+  .dropdown li a {
+    padding: 10px 30px;
+  }
+
+  .auth-item {
+    margin-left: 0;
+    width: 100%;
+    order: 100;
+    padding: 15px 0;
+    border-top: 1px solid var(--light-gray);
+    margin-top: 10px;
+  }
+  
+  .auth-box {
+    justify-content: center;
+    width: 100%;
+  }
+}
+/* ░░░ Gallery Hero Section ░░░ */
+.gallery-hero {
+  position: relative;
+  height: 70vh;
+ background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+            url('https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') center/cover no-repeat;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: zoomIn 20s ease-in-out infinite alternate;
+}
+
+.gallery-hero .hero-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--white);
+  padding: 0 2rem;
+  max-width: 800px;
+}
+
+.gallery-hero .hero-text h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: -0.5px;
+}
+
+.gallery-hero .hero-text p {
+  font-size: 1.3rem;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+/* Zoom-in animation */
+@keyframes zoomIn {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.03); }
+}
+
+/* ░░░ Filters & Search ░░░ */
+.filter-bar {
+  background: var(--white);
+  padding: 1.8rem 2rem;
+  border-bottom: 1px solid rgba(209, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 80px;
+  z-index: 50;
+  box-shadow: 0 2px 15px rgba(209, 0, 0, 0.05);
+}
+
+.filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filter-form select,
+.filter-search {
+  padding: 0.9rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(209, 0, 0, 0.2);
+  min-width: 200px;
+  background: var(--white);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-weight: 500;
+}
+
+.filter-form select:focus,
+.filter-search:focus {
+  outline: none;
+  border-color: var(--dark-red);
+  box-shadow: 0 0 0 3px rgba(209, 0, 0, 0.15);
+}
+
+.filter-search {
+  flex: 1 1 300px;
+  padding-left: 45px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='%23d10000' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='1'/%3E%3Ccircle cx='8' cy='8' r='3' fill='none' stroke='%23d10000' stroke-width='1'/%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%23d10000' stroke-width='1'/%3E%3Ccircle cx='8' cy='8' r='7' fill='none' stroke='%23d10000' stroke-width='1'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 18px center;
+  background-size: 18px;
+}
+
+.filter-btn {
+  background-color: var(--dark-red);
+  color: var(--white);
+  padding: 0.9rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(209, 0, 0, 0.2);
+}
+
+.filter-btn:hover {
+  background-color: var(--dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(209, 0, 0, 0.3);
+}
+
+/* ░░░ Product Grid ░░░ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2.5rem;
+  padding: 4rem 5%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: var(--soft-shadow);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  animation: fadeIn 0.8s ease-in-out;
+  border: 1px solid rgba(209, 0, 0, 0.05);
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(209, 0, 0, 0.15);
+  border-color: rgba(209, 0, 0, 0.2);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--dark-red), var(--dark-gray));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card:hover::before {
+  opacity: 1;
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background-color: var(--light-gray);
+  padding: 15px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.08);
+}
+
+.card-body {
+  padding: 1.8rem;
+  text-align: center;
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.card-body h3 {
+  font-size: 1.4rem;
+  color: var(--dark-gray);
+  margin: 0.8rem 0;
+  font-weight: 700;
+}
+
+.card-body .desc {
+  font-size: 0.95rem;
+  color: var(--medium-gray);
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+.card-body .price {
+  color: var(--dark-red);
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0.8rem 0;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: var(--dark-gray);
+  color: var(--white);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.badge.category {
+  background: var(--primary-red);
+}
+
+.view-btn {
+  background-color: var(--primary-red);
+  color: var(--white);
+  padding: 0.9rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-top: 15px;
+  width: 100%;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(209, 0, 0, 0.2);
+}
+
+.view-btn:hover {
+  background-color: var(--dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(209, 0, 0, 0.3);
+}
+
+
+
+
+
+.cart-btn {
+  background-color: var(--dark-red);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(209, 0, 0, 0.2);
+}
+
+.cart-btn:hover {
+  background-color: var(--dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(209, 0, 0, 0.3);
+}
+
+.wishlist-btn {
+  background-color: var(--dark-gray);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 10px rgba(51, 51, 51, 0.2);
+}
+
+.wishlist-btn:hover {
+  background-color: var(--medium-gray);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(51, 51, 51, 0.3);
+}
+
+@media screen and (max-width: 768px) {
+  .modal-actions {
+    flex-direction: column;
+  }
+  .cart-btn, 
+  .wishlist-btn, 
+  .btn-outline {
+    width: 100%;
+  }
+}
+
+/* ░░░ Modal Styles ░░░ */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background-color: var(--white);
+  margin: 5% auto;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 850px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: modalFadeIn 0.4s;
+  border: 3px solid var(--dark-red);
+  position: relative;
+}
+
+.modal-img-container {
+  width: 100%;
+  max-height: 450px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--light-gray);
+  position: relative;
+}
+
+.modal-img {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  padding: 30px;
+}
+
+.modal-body {
+  padding: 2.5rem;
+}
+
+.modal-body h2 {
+  color: var(--dark-gray);
+  margin-bottom: 0.8rem;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.modal-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.modal-desc {
+  color: var(--medium-gray);
+  line-height: 1.8;
+  margin: 2rem 0;
+  font-size: 1.05rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.rent-btn {
+  background-color: var(--dark-red);
+  color: var(--white);
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(209, 0, 0, 0.2);
+}
+
+.rent-btn:hover {
+  background-color: var(--dark-red);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(209, 0, 0, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--dark-gray);
+  padding: 1rem 2rem;
+  border: 2px solid var(--dark-gray);
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.btn-outline:hover {
+  background: var(--dark-gray);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.close {
+  color: var(--white);
+  background: var(--dark-red);
+  position: absolute;
+  right: 30px;
+  top: 20px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.close:hover {
+  background: var(--dark-red);
+  transform: rotate(90deg);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-60px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ░░░ No Results ░░░ */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 0;
+}
+
+.no-results p {
+  font-size: 1.2rem;
+  color: var(--medium-gray);
+  margin-bottom: 1.5rem;
+}
+
+.no-results .btn {
+  background-color: var(--dark-red);
+  color: var(--white);
+  padding: 0.9rem 2rem;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+.no-results .btn:hover {
+  background-color: var(--dark-red);
+}
+
+/* ░░░ Footer ░░░ */
+footer {
+  background-color: var(--dark-gray);
+  color: var(--white);
+  text-align: center;
+  padding: 3rem 0;
+  margin-top: 4rem;
+}
+
+footer p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ░░░ Animations ░░░ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ░░░ Responsive Styles ░░░ */
+@media screen and (max-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .gallery-hero {
+    height: 60vh;
+  }
+  .gallery-hero .hero-text h1 {
+    font-size: 3rem;
+  }
+  .modal-content {
+    max-width: 700px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  .gallery-hero {
+    height: 50vh;
+  }
+  .gallery-hero .hero-text h1 {
+    font-size: 2.2rem;
+  }
+  .gallery-hero .hero-text p {
+    font-size: 1.1rem;
+  }
+  .filter-form {
+    flex-direction: column;
+  }
+  .filter-search,
+  .filter-form select,
+  .filter-btn {
+    width: 100%;
+  }
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  .modal-content {
+    margin: 10% auto;
+    width: 95%;
+  }
+  .modal-body {
+    padding: 1.8rem;
+  }
+  .modal-actions {
+    flex-direction: column;
+  }
+  .rent-btn, .btn-outline {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .gallery-hero {
+    height: 40vh;
+  }
+  .gallery-hero .hero-text h1 {
+    font-size: 1.8rem;
+  }
+  .gallery-hero .hero-text p {
+    font-size: 1rem;
+  }
+  .modal-body {
+    padding: 1.5rem;
+  }
+  .modal-body h2 {
+    font-size: 1.6rem;
+  }
+  .modal-desc {
+    font-size: 0.95rem;
+  }
+  .close {
+    right: 15px;
+    top: 15px;
+    width: 35px;
+    height: 35px;
+    font-size: 24px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-left">
+    <img src="{% static 'rental/images/logo.png' %}" alt="Media City Logo" class="logo">
+    <h1>Media City</h1>
+  </div>
+  
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </div>
+  
+  <ul class="nav-links" id="menu">
+    <li><a href="{% url 'home' %}" class="nav-btn {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+      <i class="fas fa-home"></i> Home
+    </a></li>
+    
+    <li><a href="{% url 'about' %}" class="nav-btn {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+      <i class="fas fa-info-circle"></i> About
+    </a></li>
+    
+    <li><a href="{% url 'gallery' %}" class="nav-btn {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">
+      <i class="fas fa-store"></i> Store
+    </a></li>
+    
+    <li class="dropdown-parent" onclick="toggleDropdown(event)">
+      <a href="#" class="nav-btn">
+        <i class="fas fa-user-circle"></i> My Account <i class="fas fa-caret-down"></i>
+      </a>
+      <ul class="dropdown">
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+          <li><a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+          <li><a href="{% url 'checkout' %}"><i class="fas fa-credit-card"></i> Checkout</a></li>
+          
+        {% else %}
+          <li><a href="{% url 'login' %}?next={% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+          <li><a href="{% url 'login' %}?next={% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+          <li><a href="{% url 'login' %}?next={% url 'checkout' %}"><i class="fas fa-credit-card"></i> Checkout</a></li>
+           Orders</a></li>
+        {% endif %}
+      </ul>
+    </li>
+    
+    <li><a href="{% url 'contact' %}" class="nav-btn"><i class="fas fa-envelope"></i> Contact</a></li>
+    
+    <!-- Single Auth Section for both desktop and mobile -->
+    <li class="auth-item">
+      {% if user.is_authenticated %}
+        <div class="auth-box">
+          <span class="auth-welcome">Hi, {{ user.username }}</span>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="auth-box">
+          <a href="{% url 'login' %}" class="auth-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Login</a>
+          <span class="divider"></span>
+          <a href="{% url 'register' %}" class="auth-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}">Register</a>
+        </div>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
+<!-- Gallery Hero Section -->
+<section class="gallery-hero">
+  <div class="overlay"></div>
+  <div class="hero-text">
+    <h1>Premium Equipment Collection</h1>
+    <p>Discover our curated selection of professional photography and videography gear available for rent</p>
+  </div>
+</section>
+
+<!-- Filters & Search Section -->
+<section class="filter-bar">
+  <form method="get" id="filterForm" class="filter-form">
+    <input 
+      type="text" 
+      name="search" 
+      placeholder="Search products..." 
+      value="{{ request.GET.search }}"
+      class="filter-search"
+      aria-label="Search products"
+    />
+
+    <select name="category" onchange="document.getElementById('filterForm').submit()" aria-label="Filter by category">
+      <option value="">All Categories</option>
+      {% for category in categories %}
+        <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
+          {{ category.name }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <select name="brand" onchange="document.getElementById('filterForm').submit()" aria-label="Filter by brand">
+      <option value="">All Brands</option>
+      {% for brand in brands %}
+        <option value="{{ brand.id }}" {% if request.GET.brand == brand.id|stringformat:"s" %}selected{% endif %}>
+          {{ brand.name }}
+        </option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="filter-btn">
+      <i class="fas fa-filter"></i> Apply Filters
+    </button>
+  </form>
+</section>
+
+<!-- Product Grid Section -->
+<section class="product-grid">
+  {% for product in products %}
+    <div class="product-card">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+      <div class="card-body">
+        <h3>{{ product.name }}</h3>
+        <p class="desc">{{ product.description|truncatewords:15 }}</p>
+        <div class="badges">
+          <span class="badge category">{{ product.category.name }}</span>
+          {% if product.brand %}
+          <span class="badge">{{ product.brand.name }}</span>
+          {% endif %}
+        </div>
+        <p class="price">${{ product.price }}/day</p>
+        <button onclick="openModal({{ product.id }})" class="view-btn">
+          <i class="fas fa-eye"></i> View Details
+        </button>
+      </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="modal-{{ product.id }}" class="modal">
+      <span class="close" onclick="closeModal({{ product.id }})" aria-label="Close modal">&times;</span>
+      <div class="modal-content">
+        <div class="modal-img-container">
+          <img src="{{ product.image.url }}" alt="{{ product.name }}" class="modal-img">
+        </div>
+        <div class="modal-body">
+          <h2>{{ product.name }}</h2>
+          <div class="modal-meta">
+            <span class="badge category">{{ product.category.name }}</span>
+            <span class="price">${{ product.price }}/day</span>
+          </div>
+          <p class="modal-desc">{{ product.description }}</p>
+          <div class="modal-actions">
+            <button class="cart-btn" onclick="addToCart({{ product.id }})">
+              <i class="fas fa-shopping-cart"></i> Add to Cart
+            </button>
+            <button class="wishlist-btn" onclick="addToWishlist({{ product.id }})">
+              <i class="fas fa-heart"></i> Add to Wishlist
+            </button>
+            <button class="btn-outline" onclick="closeModal({{ product.id }})">
+              <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <div class="no-results">
+      <p>No products found matching your criteria.</p>
+      <a href="{% url 'gallery' %}" class="btn">
+        <i class="fas fa-sync-alt"></i> Reset Filters
+      </a>
+    </div>
+  {% endfor %}
+</section>
+
+<!-- Footer Section -->
+<footer>
+  <p>&copy; 2025 Media City. All rights reserved.</p>
+</footer>
+
+<script>
+// Enhanced Menu toggle functionality
+function toggleMenu() {
+  const menu = document.getElementById("menu");
+  menu.classList.toggle("show");
+  document.body.style.overflow = menu.classList.contains("show") ? "hidden" : "";
+  
+  // Toggle dropdown parent active state
+  const dropdownParents = document.querySelectorAll('.dropdown-parent');
+  dropdownParents.forEach(parent => {
+    parent.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        this.classList.toggle('active');
+      }
+    });
+  });
+}
+
+// Enhanced Modal functionality with animations
+function openModal(id) {
+  const modal = document.getElementById(`modal-${id}`);
+  modal.style.display = 'block';
+  document.body.style.overflow = "hidden";
+  
+  // Add animation class
+  setTimeout(() => {
+    modal.querySelector('.modal-content').classList.add('animate-in');
+  }, 10);
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(`modal-${id}`);
+  modal.querySelector('.modal-content').classList.remove('animate-in');
+  modal.querySelector('.modal-content').classList.add('animate-out');
+  
+  setTimeout(() => {
+    modal.style.display = 'none';
+    document.body.style.overflow = "";
+    modal.querySelector('.modal-content').classList.remove('animate-out');
+  }, 300);
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach(modal => {
+    if (event.target == modal) {
+      closeModal(modal.id.split('-')[1]);
+    }
+  });
+}
+
+// Close modal with ESC key
+document.addEventListener('keydown', function(event) {
+  if (event.key === "Escape") {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      if (modal.style.display === "block") {
+        closeModal(modal.id.split('-')[1]);
+      }
+    });
+  }
+});
+
+// Initialize dropdown parents for mobile
+document.addEventListener('DOMContentLoaded', function() {
+  const dropdownParents = document.querySelectorAll('.dropdown-parent');
+  
+  dropdownParents.forEach(parent => {
+    parent.addEventListener('click', function(e) {
+      if (window.innerWidth <= 768) {
+        e.preventDefault();
+        this.classList.toggle('active');
+      }
+    });
+  });
+  
+  // Add smooth scroll to top when opening modals
+  const viewButtons = document.querySelectorAll('.view-btn');
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  });
+});
+
+// Add to cart functionality (placeholder)
+function addToCart(productId) {
+  // This would be replaced with actual cart functionality
+  console.log(`Added product ${productId} to cart`);
+  alert('Item added to cart!');
+}
+
+
+
+// Add to Cart function
+function addToCart(productId) {
+    fetch(`/add-to-cart/${productId}/`, {
+        method: 'GET',  // Your view expects a GET request
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else {
+            return response.text().then(text => {
+                try {
+                    return text ? JSON.parse(text) : {}
+                } catch {
+                    return {}
+                }
+            });
+        }
+    })
+    .then(data => {
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        } else {
+            // Reload the page to show the Django message
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error adding to cart', 'error');
+    });
+}
+
+// Add to Wishlist function
+function addToWishlist(productId) {
+    fetch(`/add-to-wishlist/${productId}/`, {
+        method: 'GET',  // Your view expects a GET request
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        credentials: 'same-origin'
+    })
+    .then(response => {
+        if (response.redirected) {
+            window.location.href = response.url;
+        } else {
+            return response.text().then(text => {
+                try {
+                    return text ? JSON.parse(text) : {}
+                } catch {
+                    return {}
+                }
+            });
+        }
+    })
+    .then(data => {
+        if (data.redirect) {
+            window.location.href = data.redirect;
+        } else {
+            // Reload the page to show the Django message
+            window.location.reload();
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showNotification('Error adding to wishlist', 'error');
+    });
+}
+// Notification function
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 10);
+  
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => {
+      document.body.removeChild(notification);
+    }, 300);
+  }, 3000);
+}
+
+// Add CSS for notifications
+const style = document.createElement('style');
+style.textContent = `
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.notification.success {
+  background-color: #4CAF50;
+}
+
+.notification.error {
+  background-color: #F44336;
+}
+`;
+document.head.appendChild(style);
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,660 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Media City</title>
+    <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1d4023;
+            --secondary: #f7941d;
+            --light: #f9f9f9;
+            --dark: #333;
+            --danger: #ff5a5a;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h2 {
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        section {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 25px;
+        }
+        
+        .cart-item {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+            align-items: center;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+        }
+        
+        .cart-item-details {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .cart-item-details p {
+            margin: 5px 0;
+        }
+        
+        .cart-item-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        
+        label {
+            font-weight: 600;
+            display: block;
+            margin: 15px 0 8px;
+            color: var(--dark);
+        }
+        
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(247, 148, 29, 0.2);
+        }
+        
+        input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--secondary);
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        button[type="submit"] {
+            background-color: var(--secondary);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #e68311;
+            transform: translateY(-2px);
+        }
+        
+        .remove-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            transition: var(--transition);
+        }
+        
+        .remove-btn:hover {
+            background: #e04a4a;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #eee;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .required:after {
+            content: " *";
+            color: var(--danger);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            section {
+                padding: 20px;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cart-item img {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+            }
+        }
+
+        /* Navbar styles (same as before) */
+      /* ░░░ NAVBAR ░░░ */
+.navbar {
+  background: white; /* Changed from dark green to white */
+  color: #d10000; /* Changed text color to red */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.nav-left .logo {
+  width: 50px;
+  margin-right: 12px;
+}
+
+.nav-left h1 {
+  font-size: 2rem;
+  margin: 0;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #d10000 50%, #333 50%); /* Changed orange to red and white to dark gray */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  color: #333; /* Changed from white to dark text */
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.nav-btn.active {
+  background: #d10000; /* Changed from orange to red */
+  color: white; /* Changed from dark green to white */
+}
+
+.dropdown-parent {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: none;
+  background: white;
+  color: #333; /* Changed from dark green to dark text */
+  list-style: none;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.dropdown-parent:hover .dropdown {
+  display: block;
+}
+
+.dropdown li a {
+  color: #333; /* Changed from dark green to dark text */
+  padding: 6px 12px;
+  display: block;
+  text-decoration: none;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #333; /* Changed from white to dark text */
+}
+
+.nav-cta {
+  background-color: #d10000; /* Changed from orange to red */
+  color: white; /* Changed from dark green to white */
+  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  text-align: center;
+  margin-left: 20px;
+  white-space: nowrap;
+}
+
+.nav-cta:hover {
+  background-color: #b00000; /* Darker red on hover */
+  color: white;
+}
+
+.desktop-only {
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    color: #333; /* Changed from white to dark text */
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    margin-top: 20px;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links li a {
+    display: block;
+    color: #333; /* Changed from white to dark text */
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .nav-links li:last-child {
+    margin-top: 15px;
+  }
+
+  .nav-links li:last-child a.nav-cta {
+    display: block;
+    width: 100%;
+    background-color: #d10000; /* Changed from orange to red */
+    color: white;
+    font-weight: bold;
+    padding: 10px 0;
+    border-radius: 30px;
+    text-align: center;
+  }
+}
+    </style>
+</head>
+<body>
+    <!-- Standardized Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="{% static 'rental/images/logo.png' %}" alt="Logo" class="logo">
+            <h1>Media City</h1>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        <ul class="nav-links" id="menu">
+            <li><a href="{% url 'home' %}" class="nav-btn {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+            <li><a href="{% url 'about' %}" class="nav-btn {% if request.resolver_match.url_name == 'about' %}active{% endif %}">About</a></li>
+            <li><a href="{% url 'gallery' %}" class="nav-btn {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">Store</a></li>
+            
+            <li class="dropdown-parent" onclick="toggleDropdown(this)">
+                <a href="#" class="nav-btn">My Account <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown">
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                        <li><a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+                        <li><a href="{% url 'checkout' %}"><i class="fas fa-receipt"></i> Checkout</a></li>
+                        
+                    {% else %}
+                        <li><a href="{% url 'login' %}?next={% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                        <li><a href="{% url 'login' %}?next={% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+                        <li><a href="{% url 'login' %}?next={% url 'checkout' %}"><i class="fas fa-receipt"></i> Checkout</a></li>
+                        
+                    {% endif %}
+                </ul>
+            </li>
+            
+            <li><a href="{% url 'contact' %}" class="nav-btn">Contact</a></li>
+        </ul>
+        
+        {% if user.is_authenticated %}
+        <div class="auth-box desktop-only">
+            <span class="auth-welcome">Hi, {{ user.username }}</span>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+        {% else %}
+        <div class="auth-box desktop-only">
+            <a href="{% url 'login' %}" class="auth-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Login</a>
+            <span class="divider"></span>
+            <a href="{% url 'register' %}" class="auth-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}">Register</a>
+        </div>
+        {% endif %}
+    </nav>
+    
+    <div class="container">
+        <h2><i class="fas fa-receipt"></i> Checkout</h2>
+
+        <form method="POST" action="{% url 'place_order' %}" id="checkout-form">
+            {% csrf_token %}
+
+            <!-- 🛒 Cart Summary -->
+            <section id="cart-summary">
+                <h3><i class="fas fa-shopping-cart"></i> Cart Summary</h3>
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <div class="cart-item">
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                        <div class="cart-item-details">
+                            <p class="cart-item-title">{{ item.product.name }}</p>
+                            <p><strong>Price/day:</strong> ${{ item.product.price_per_day }}</p>
+                            <div class="form-grid">
+                                <div>
+                                    <label for="quantity_{{ item.id }}">Quantity</label>
+                                    <input type="number" id="quantity_{{ item.id }}" name="quantity_{{ item.id }}" 
+                                           value="{{ item.quantity }}" min="1" onchange="updateCartItem(this)">
+                                </div>
+                                <div>
+                                    <label for="days_{{ item.id }}">Rental Days</label>
+                                    <input type="number" id="days_{{ item.id }}" name="days_{{ item.id }}" 
+                                           value="{{ item.rental_days }}" min="1" onchange="updateCartItem(this)">
+                                </div>
+                            </div>
+                            <p><strong>Subtotal:</strong> $<span class="item-total">{{ item.total_price }}</span></p>
+                            <button type="submit" name="remove" value="{{ item.id }}" class="remove-btn">
+                                <i class="fas fa-trash-alt"></i> Remove
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-cart">
+                        <p>Your cart is empty.</p>
+                        <a href="{% url 'gallery' %}" class="btn">Browse Products</a>
+                    </div>
+                {% endif %}
+            </section>
+
+            <!-- 📅 Rental Duration -->
+            <section id="rental-duration">
+                <h3><i class="far fa-calendar-alt"></i> Rental Period</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="start_date" class="required">Start Date</label>
+                        <input type="date" id="start_date" name="start_date" required 
+                               min="{{ today|date:'Y-m-d' }}" onchange="validateDates()">
+                    </div>
+                    <div>
+                        <label for="end_date" class="required">End Date</label>
+                        <input type="date" id="end_date" name="end_date" required 
+                               min="{{ today|date:'Y-m-d' }}" onchange="validateDates()">
+                    </div>
+                </div>
+                <p id="date-error" style="color: var(--danger); display: none;">
+                    <i class="fas fa-exclamation-circle"></i> End date must be after start date
+                </p>
+            </section>
+
+            <!-- 📍 Delivery or Pickup -->
+            <section id="delivery-options">
+                <h3><i class="fas fa-truck"></i> Delivery Options</h3>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="delivery_option" value="pickup" checked 
+                               onchange="toggleAddressFields(false)">
+                        <i class="fas fa-store"></i> Store Pickup
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="delivery_option" value="delivery" 
+                               onchange="toggleAddressFields(true)">
+                        <i class="fas fa-home"></i> Home Delivery
+                    </label>
+                </div>
+
+                <div id="address-fields" class="hidden">
+                    <h4><i class="fas fa-map-marker-alt"></i> Delivery Address</h4>
+                    <div class="form-grid">
+                        <div>
+                            <label for="full_name" class="required">Full Name</label>
+                            <input type="text" id="full_name" name="full_name">
+                        </div>
+                        <div>
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div>
+                            <label for="address" class="required">Street Address</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        <div>
+                            <label for="city" class="required">City</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div>
+                            <label for="zip_code" class="required">Zip Code</label>
+                            <input type="text" id="zip_code" name="zip_code">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 💳 Payment -->
+            <section id="payment-method">
+                <h3><i class="far fa-credit-card"></i> Payment Method</h3>
+                <div class="radio-group">
+                    <label class="radio-option">
+                        <input type="radio" name="payment_method" value="cod" checked>
+                        <i class="fas fa-money-bill-wave"></i> Cash on Delivery
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="payment_method" value="card">
+                        <i class="far fa-credit-card"></i> Credit/Debit Card
+                    </label>
+                </div>
+            </section>
+
+            <!-- 🧾 Order Summary -->
+            <section id="order-summary">
+                <h3><i class="fas fa-file-invoice-dollar"></i> Order Summary</h3>
+                <div class="summary-item">
+                    <span>Subtotal:</span>
+                    <span>${{ subtotal }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Delivery Fee:</span>
+                    <span>${{ delivery_fee }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Estimated Tax:</span>
+                    <span>$0.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Total:</span>
+                    <span>${{ total }}</span>
+                </div>
+                
+                <button type="submit" id="place-order-btn">
+                    <i class="fas fa-lock"></i> Place Order Securely
+                </button>
+                
+                <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                    <i class="fas fa-shield-alt"></i> Secure checkout. Your information is protected.
+                </p>
+            </section>
+        </form>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        }
+        
+        // Toggle dropdown on mobile
+        function toggleDropdown(element) {
+            if (window.innerWidth <= 768) {
+                element.classList.toggle('active');
+            }
+        }
+        
+        // Show/hide address fields based on delivery option
+        function toggleAddressFields(show) {
+            const addressFields = document.getElementById('address-fields');
+            if (show) {
+                addressFields.classList.remove('hidden');
+                // Mark address fields as required
+                document.querySelectorAll('#address-fields input').forEach(input => {
+                    input.required = true;
+                });
+            } else {
+                addressFields.classList.add('hidden');
+                // Remove required from address fields
+                document.querySelectorAll('#address-fields input').forEach(input => {
+                    input.required = false;
+                });
+            }
+        }
+        
+        // Validate date range
+        function validateDates() {
+            const startDate = new Date(document.getElementById('start_date').value);
+            const endDate = new Date(document.getElementById('end_date').value);
+            const errorElement = document.getElementById('date-error');
+            
+            if (startDate && endDate && endDate <= startDate) {
+                errorElement.style.display = 'block';
+                document.getElementById('place-order-btn').disabled = true;
+            } else {
+                errorElement.style.display = 'none';
+                document.getElementById('place-order-btn').disabled = false;
+            }
+        }
+        
+        // Update cart item total (simplified example)
+        function updateCartItem(input) {
+            // In a real implementation, this would calculate the new total
+            // based on quantity and days, then update the displayed total
+            // This might require an AJAX call to the server
+            console.log('Item updated:', input.name, input.value);
+        }
+        
+        // Initialize form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum dates for date inputs
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('start_date').min = today;
+            document.getElementById('end_date').min = today;
+            
+            // Initialize delivery option
+            toggleAddressFields(false);
+        });
+    </script>
+</body>
+</html>

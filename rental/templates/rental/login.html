@@ -1,0 +1,636 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Media City</title>
+  <link rel="stylesheet" href="{% static 'rental/css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fefaf5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    /* ░░░ NAVBAR ░░░ */
+.navbar {
+  background: var(--white);
+  color: var(--primary-red);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5%;
+  flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  padding: 10px 5%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-left .logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.nav-left .logo:hover {
+  transform: scale(1.05);
+}
+
+.nav-left h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-gray) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 30px;
+  color: var(--dark-gray);
+  font-weight: 600;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-links li a:hover,
+.nav-links li a.nav-btn.active {
+  background: var(--primary-red);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.dropdown-parent {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  display: none;
+  background: var(--white);
+  color: var(--dark-gray);
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.dropdown-parent:hover .dropdown {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown li a {
+  color: var(--dark-gray);
+  padding: 8px 20px;
+  display: block;
+  text-decoration: none;
+  border-radius: 0;
+  transition: all 0.2s ease;
+}
+
+.dropdown li a:hover {
+  background: rgba(var(--primary-red-rgb), 0.1);
+  color: var(--primary-red);
+  padding-left: 25px;
+}
+
+.dropdown li a i {
+  width: 20px;
+  text-align: center;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: var(--dark-gray);
+  transition: transform 0.3s ease;
+}
+
+.hamburger:hover {
+  transform: scale(1.1);
+  color: var(--primary-red);
+}
+
+/* Auth Section Styles */
+.auth-item {
+  margin-left: auto;
+}
+
+.auth-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.auth-welcome {
+  font-weight: 600;
+  color: var(--dark-gray);
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: var(--primary-red);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: rgba(var(--primary-red-rgb), 0.1);
+}
+
+.auth-link {
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.auth-link:hover {
+  background: rgba(var(--primary-red-rgb), 0.1);
+}
+
+.auth-link.active {
+  background: var(--primary-red);
+  color: var(--white);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: var(--light-gray);
+}
+
+/* Mobile Styles */
+@media (max-width: 992px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+  
+  .nav-links {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    order: 1;
+  }
+
+  .nav-left {
+    order: 0;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    display: none;
+    margin-top: 20px;
+    gap: 5px;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 5px;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .dropdown-parent {
+    width: 100%;
+  }
+
+  .dropdown {
+    position: static;
+    display: none;
+    width: 100%;
+    box-shadow: none;
+    padding: 0;
+    margin-top: 5px;
+    opacity: 1;
+    transform: none;
+  }
+
+  .dropdown-parent:hover .dropdown,
+  .dropdown-parent.active .dropdown {
+    display: block;
+  }
+
+  .dropdown li a {
+    padding: 10px 30px;
+  }
+
+  .auth-item {
+    margin-left: 0;
+    width: 100%;
+    order: 100;
+    padding: 15px 0;
+    border-top: 1px solid var(--light-gray);
+    margin-top: 10px;
+  }
+  
+  .auth-box {
+    justify-content: center;
+    width: 100%;
+  }
+}
+    
+
+
+
+
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      padding: 40px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .login-container h2 {
+      text-align: center;
+      color: var(--dark-green);
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .login-container input:focus {
+      border-color: var(--accent-orange);
+      outline: none;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background-color: #d10000 ;
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition:#d10000 0.3s ease;
+    }
+
+    .login-container button:hover {
+      background-color: #FFD700;
+    }
+
+    .login-container p {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 0.95rem;
+    }
+
+    .login-container p a {
+      color: var(--accent-orange);
+      text-decoration: none;
+    }
+
+    .login-container p a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+
+
+#toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+
+
+#flash-messages {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flash {
+  background-color: #ffffff;
+  color: #1d4023;
+  border-left: 6px solid var(--accent-orange);
+  padding: 14px 20px;
+  margin: 8px 0;
+  min-width: 280px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  font-weight: 500;
+  animation: slideFade 0.5s ease-out, disappear 0.5s ease-out 3s forwards;
+}
+
+.flash.success {
+  border-left-color: #1d4023;
+  color: #1d4023;
+}
+
+.flash.error {
+  border-left-color: crimson;
+  color: crimson;
+}
+
+@keyframes slideFade {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes disappear {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+
+
+
+
+
+
+
+
+  .auth-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 20px;
+}
+
+.auth-welcome {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.auth-link,
+.logout-btn {
+  padding: 7px 18px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background-color: transparent;
+  color: #ffa500;
+  border: none;
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.auth-link:hover,
+.logout-btn:hover {
+  color: #fff;
+  border-bottom: 2px solid #ffa500;
+  background-color: transparent;
+}
+
+.auth-link.active {
+  color: white;
+  border-bottom: 2px solid #ffa500;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #ffa500;
+  opacity: 0.6;
+}
+
+  </style>
+</head>
+<body>
+
+
+{% if messages %}
+  <div id="flash-messages">
+    {% for message in messages %}
+      <div class="flash {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+
+
+
+<!-- Navigation Bar -->
+<nav class="navbar" id="navbar">
+  <div class="nav-left">
+    <img src="{% static 'rental/images/logo.png' %}" alt="Media City Logo" class="logo">
+    <h1>Media City</h1>
+  </div>
+  
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Toggle menu">
+    <i class="fas fa-bars"></i>
+  </div>
+  
+  <ul class="nav-links" id="menu">
+    <li><a href="{% url 'home' %}" class="nav-btn {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+      <i class="fas fa-home"></i> Home
+    </a></li>
+    
+    <li><a href="{% url 'about' %}" class="nav-btn {% if request.resolver_match.url_name == 'about' %}active{% endif %}">
+      <i class="fas fa-info-circle"></i> About
+    </a></li>
+    
+    <li><a href="{% url 'gallery' %}" class="nav-btn {% if request.resolver_match.url_name == 'gallery' %}active{% endif %}">
+      <i class="fas fa-store"></i> Store
+    </a></li>
+    
+    <li class="dropdown-parent" onclick="toggleDropdown(event)">
+      <a href="#" class="nav-btn">
+        <i class="fas fa-user-circle"></i> My Account <i class="fas fa-caret-down"></i>
+      </a>
+      <ul class="dropdown">
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+          <li><a href="{% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+          <li><a href="{% url 'checkout' %}"><i class="fas fa-credit-card"></i> Checkout</a></li>
+          
+        {% else %}
+          <li><a href="{% url 'login' %}?next={% url 'cart' %}"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+          <li><a href="{% url 'login' %}?next={% url 'wishlist' %}"><i class="fas fa-heart"></i> Wishlist</a></li>
+          <li><a href="{% url 'login' %}?next={% url 'checkout' %}"><i class="fas fa-credit-card"></i> Checkout</a></li>
+          
+        {% endif %}
+      </ul>
+    </li>
+    
+    <li><a href="{% url 'contact' %}" class="nav-btn"><i class="fas fa-envelope"></i> Contact</a></li>
+    
+    <!-- Single Auth Section for both desktop and mobile -->
+    <li class="auth-item">
+      {% if user.is_authenticated %}
+        <div class="auth-box">
+          <span class="auth-welcome">Hi, {{ user.username }}</span>
+          <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="logout-btn">Logout</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="auth-box">
+          <a href="{% url 'login' %}" class="auth-link {% if request.resolver_match.url_name == 'login' %}active{% endif %}">Login</a>
+          <span class="divider"></span>
+          <a href="{% url 'register' %}" class="auth-link {% if request.resolver_match.url_name == 'register' %}active{% endif %}">Register</a>
+        </div>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
+
+
+<!-- Login Form -->
+<div class="login-container">
+  <h2>Login to Your Account</h2>
+  <form method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <!-- Add to both files -->
+{% if next %}
+  <input type="hidden" name="next" value="{{ next }}">
+{% endif %}
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+</div>
+<!-- Add after form fields -->
+{% if form.errors %}
+<div class="form-errors">
+  {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+      <p class="error">{{ error }}</p>
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Footer (copy from your existing code) -->
+<footer>
+  <p>&copy; 2025 Media City. All rights reserved.</p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('menu').classList.toggle('show');
+  }
+</script>
+
+
+
+
+
+
+
+<script>
+  // Optional: remove toasts from DOM after animation
+  document.addEventListener('DOMContentLoaded', () => {
+    const toasts = document.querySelectorAll('.toast');
+    toasts.forEach(toast => {
+      setTimeout(() => {
+        toast.remove();
+      }, 4000); // 3s delay + 1s buffer
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const flashMessages = document.querySelectorAll(".flash");
+    flashMessages.forEach(msg => {
+      setTimeout(() => msg.remove(), 4000); // Fully remove after 4 seconds
+    });
+  });
+</script>
+
+
+
+</body>
+</html>
