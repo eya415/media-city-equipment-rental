@@ -55,13 +55,19 @@ The platform includes several sections designed around the user's equipment-rent
 
 ## 📸 Project Preview
 
+
 ### Homepage
 
 ![Media City Homepage](photos/homepage.png)
 
+
+### About Media City
+
+![Media City Equipment](photos/about.png)
+
 ### Equipment & Categories
 
-![Media City Equipment](screenshots/equipment.png)
+![Media City Equipment](photos/store.png)
 
 ## 👩‍💻 My Role
 
