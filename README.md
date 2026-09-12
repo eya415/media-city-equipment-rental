@@ -41,7 +41,6 @@ The platform includes several sections designed around the user's equipment-rent
 - About
 - Store
 - Equipment Categories
-- 
 - Product Pages
 - My Account
 - Contact
