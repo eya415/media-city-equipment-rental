@@ -41,7 +41,7 @@ The platform includes several sections designed around the user's equipment-rent
 - About
 - Store
 - Equipment Categories
-- Best Sellers
+- 
 - Product Pages
 - My Account
 - Contact
@@ -53,14 +53,12 @@ The platform includes several sections designed around the user's equipment-rent
 - HTML5
 - CSS3
 - JavaScript
-- [Add your framework/library]
-- [Add other technologies]
 
 ## 📸 Project Preview
 
 ### Homepage
 
-![Media City Homepage](screenshots/homepage.png)
+![Media City Homepage](photos/homepage.png)
 
 ### Equipment & Categories
 
